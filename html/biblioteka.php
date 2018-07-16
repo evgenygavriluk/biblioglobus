@@ -1,9 +1,5 @@
 <?php
-
-ini_set('display_errors','On');
-error_reporting('E_ALL');
-//phpinfo();
-require_once "TableList.php"; ?>
+require_once "Clases.php"; ?>
 
 <html>
     <head>
@@ -11,7 +7,7 @@ require_once "TableList.php"; ?>
     </head>
     <body>
 <?php
-    $bibliotekaList = new TableList('biblioteka');
+    $biblioteka = new Biblioteka();
 
 if(!isset($_GET['bibliotekaid'])){
     echo '<h1>Библиотеки объединения "Библиоглобус"</h1>';
@@ -19,16 +15,16 @@ if(!isset($_GET['bibliotekaid'])){
 
     <ul>
     <?php
-    $bibliotekaList->showBibliotekaList();
+    $biblioteka->showBibliotekaList();
     ?>
     </ul>
 <?php
 }
 else if(isset($_GET['bibliotekaid'])){
-    echo '<h1>'.$bibliotekaList->getTableField('bibliotekatitle', 'bibliotekaid', htmlspecialchars($_GET['bibliotekaid'])).'</h1>';
-    echo '<p>'.$bibliotekaList->getTableField('bibliotekaadress', 'bibliotekaid', htmlspecialchars($_GET['bibliotekaid'])).'</p>';
+    echo '<h1>'.$biblioteka->getBibliotekaName($_GET['bibliotekaid']).'</h1>';
+    echo '<p>'. $biblioteka->getBibliotekaAdress($_GET['bibliotekaid']).'</p>';
 
-    $bibliotekaList->showContainBooks(htmlspecialchars($_GET['bibliotekaid']));
+    $biblioteka->showContainBooks(htmlspecialchars($_GET['bibliotekaid']));
 
 }
 ?>

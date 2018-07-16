@@ -1,9 +1,5 @@
 <?php
-
-ini_set('display_errors','On');
-error_reporting('E_ALL');
-//phpinfo();
-require_once "TableList.php"; ?>
+require_once "Clases.php"; ?>
 
 <html>
 <head>
@@ -11,7 +7,7 @@ require_once "TableList.php"; ?>
 </head>
 <body>
 <?php
-$bookList = new TableList('book');
+$book = new Book();
 
 if(!isset($_GET['bookid'])){
     echo '<h1>Все книги объединения "Библиоглобус"</h1>';
@@ -20,8 +16,8 @@ if(!isset($_GET['bookid'])){
 <?php
 }
 else if(isset($_GET['bookid'])){
-    echo '<h1>'.$bookList->getBookName(htmlspecialchars($_GET['bookid'])).'</h1>';
-    $bookList->showBookAuthor(htmlspecialchars($_GET['bookid']));
+    echo '<h1>'.$book->getBookName($_GET['bookid']).'</h1>';
+    $book->showBookAuthors(htmlspecialchars($_GET['bookid']));
 }
 ?>
 <?php require_once "js.php"; ?>

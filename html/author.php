@@ -1,9 +1,5 @@
 <?php
-
-ini_set('display_errors','On');
-error_reporting('E_ALL');
-//phpinfo();
-require_once "TableList.php"; ?>
+require_once "Clases.php"; ?>
 
 <html>
 <head>
@@ -11,14 +7,14 @@ require_once "TableList.php"; ?>
 </head>
 <body>
 <?php
-$bookList = new TableList('author');
+$author = new Author();
 
 if(!isset($_GET['authorid'])){
     echo '<h1>Все авторы</h1>';
 }
 else if(isset($_GET['authorid'])){
-    echo '<h1>'.$bookList->getAuthorName(htmlspecialchars($_GET['authorid'])).'</h1>';
-    $bookList->showBookAuthor(htmlspecialchars($_GET['bookid']));
+    echo '<h1>'.$author->getAuthorName(htmlspecialchars($_GET['authorid'])).'</h1>';
+    $author->showAuthorBooks($_GET['authorid']);
 }
 ?>
 <?php require_once "js.php"; ?>
