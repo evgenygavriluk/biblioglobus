@@ -74,9 +74,9 @@ class Author extends Biblioglobus
 
     // Показывает список всех авторов
     public function showAuthorList(){
-        $authorList = '<ul>';
+        $authorList = '<ul class="list-group">';
         foreach($this->getTableList() as $list=>$elements){
-            $authorList.='<li><a href="?authorid='.$elements['authorid'].'">'.$elements['authorname'].'</a></li>';
+            $authorList.='<li class="list-group-item"><a href="?authorid='.$elements['authorid'].'">'.$elements['authorname'].'</a></li>';
         }
         $authorList.='</ul>';
         return $authorList;
@@ -96,9 +96,9 @@ class Author extends Biblioglobus
         } catch (PDOException$e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
         }
-        $authorBooks.='<ul>';
+        $authorBooks.='<ul class="list-group">';
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $authorBooks.='<li><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
+            $authorBooks.='<li class="list-group-item"><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
         }
         $authorBooks.='</ul>';
         return $authorBooks;
@@ -210,9 +210,9 @@ class Biblioteka extends Biblioglobus
         } catch (PDOException $e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
         }
-        $bookList.='<ul>';
+        $bookList.='<ul class="list-group">';
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $bookList.= '<li>'.$book->showBookAuthors($elements['bookid']).'<a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
+            $bookList.= '<li class="list-group-item">'.$book->showBookAuthors($elements['bookid']).'<a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
         }
         $bookList.='</ul>';
         return $bookList;
@@ -245,7 +245,7 @@ class Comment extends Biblioglobus
     public function showBookComments($bookid){
         $commentList = '';
         foreach($this->getBookComments($bookid) as $list=>$elements){
-            $commentList .= '<div class="commentary"><p><strong>'.$elements['commentatorname'].'</strong> поставил книге '.$elements['commentraiting'].' баллов</p><p>'.$elements['commenttext'].'</p></div>';
+            $commentList .= '<div class="commentary alert alert-info""><p><strong>'.$elements['commentatorname'].'</strong> поставил книге '.$elements['commentraiting'].' баллов</p><em>'.$elements['commenttext'].'</em></div>';
         }
         return $commentList;
     }
