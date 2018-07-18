@@ -1,0 +1,33 @@
+/* main.css */
+
+html, body {
+    height: 100%;
+}
+
+header{
+    height: 80px;
+    background-color: dodgerblue;
+    color: white;
+}
+
+footer{
+    height: 40px;
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    background-color: dodgerblue;
+    color: white;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
