@@ -112,6 +112,20 @@ class Book extends Biblioglobus
         //echo "Class is ready ($this->tableName)";
     }
 
+    // Возвращает всю информацию о книге
+    public function getAllAboutBook($bookId){
+        $bookInfo = array();
+        try{
+            $result = $this->dbh->query("SELECT * FROM book WHERE bookid=$bookId");
+        } catch (PDOException$e){
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+        foreach ($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements)
+        {
+            $bookInfo += $elements;
+        }
+        return $bookInfo;
+    }
 
     // Возвращает название книги с bookid = $bookid
     public function getBookName($bookid){
@@ -121,6 +135,11 @@ class Book extends Biblioglobus
     // Возвращает описание книги с bookid = $bookid
     public function getBookDescription($bookid){
         return $this->getTableField('bookdescription', 'bookid', htmlspecialchars($bookid));
+    }
+
+    // Возвращает  имя файла изображения книги
+    public function getBookImage($bookid){
+        return $this->getTableField('bookimage', 'bookid', htmlspecialchars($bookid));
     }
 
     // Возвращает автора(ов) книги с bookid = $bookid

@@ -20,14 +20,17 @@ if(!isset($_GET['bookid'])){
 <?php
 }
 else if(isset($_GET['bookid'])){
+
     $bId = $_GET['bookid'];
-    $h1 = $book->getBookName($_GET['bookid']);
-    $authors = $book->showBookAuthors(htmlspecialchars($bId));
-    $description = $book->getBookDescription(htmlspecialchars($bId));
+
+    $thisBook = $book->getAllAboutBook($bId);
+    $h1 = $thisBook['bookname'];
+    $bookImage = $thisBook['bookimage'];
+    $description = $thisBook['description'];
+    $authors = $book->showBookAuthors($bId);
     $books = '';
     $bibliotecs = $book->getBookBiblioteks($bId);
     $comments = $comment->showBookComments($bId);
-
 }
 
 require_once "template-book.php"; ?>

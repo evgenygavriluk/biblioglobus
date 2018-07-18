@@ -36,8 +36,9 @@
             </div>
         </div>
 <?php if(!$authors==''):?>
-        <div class="row">
-            <div class="col-lg-6">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 justify-content-center">
+                <img src="pic/books/<?=$bookImage;?>" class="bg-book-image">
             </div>
             <div class="col-lg-6">
                 <?='Автор: '.$authors; ?>
