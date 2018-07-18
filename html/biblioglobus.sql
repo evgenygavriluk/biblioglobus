@@ -69,9 +69,9 @@ CREATE TABLE `book` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `book` (`bookid`, `bookname`, `bookpublicyear`, `bookpages`, `bookthema`, `bookdescription`) VALUES
-(1,	'Мальчиш-кибальчиш',	'1937',	120,	0,	NULL),
-(2,	'Три толстяка. Империя наносит ответный удар',	'1985',	820,	0,	NULL),
-(3,	'Вишневый сад',	'2007',	523,	0,	NULL),
+(1,	'Мальчиш-кибальчиш',	'1937',	120,	0,	'Мальчиш-Кибальчиш — произведение Аркадия Гайдара. Рассказывается в нём о том, как Мальчиш-Кибальчиш боролся с коварными и злобными буржуинами, врагами Советского Союза. Произведение «Мальчиш-Кибальчиш» будет интересно детям в возрасте от 9 до 11 лет.'),
+(2,	'Три толстяка. Империя наносит ответный удар',	'1985',	820,	0,	'«Три Толстяка. Империя наносит ответный удар» — продолжение сказки Юрия Олеши, написанная им 1924 году. В книге рассказывается о подавлении революции, поднятой бедняками под предводительством оружейника Просперо и гимнаста Тибула против богачей (Толстяков) в выдуманной стране. '),
+(3,	'Вишневый сад',	'2007',	523,	0,	'Лирическая пьеса в четырёх действиях, жанр которой сам автор определил как комедия. Пьеса написана в 1903 году, впервые поставлена 17 января 1904 года в Московском художественном театре. Одно из самых известных русских пьес, написанных в то время. '),
 (4,	'Буратино',	'1957',	220,	0,	NULL),
 (5,	'Козетта',	'2014',	900,	0,	NULL);
 
@@ -120,13 +120,17 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `commentid` int(10) NOT NULL AUTO_INCREMENT,
   `bookid` int(10) NOT NULL,
-  `commenttext` int(11) NOT NULL,
-  `commentraiting` tinyint(1) DEFAULT NULL,
+  `commenttext` varchar(2000) COLLATE utf8_unicode_ci NOT NULL,
+  `commentraiting` int(10) unsigned DEFAULT NULL,
+  `commentatorname` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`commentid`),
   KEY `bookid` (`bookid`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`bookid`) REFERENCES `book` (`bookid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `comment` (`commentid`, `bookid`, `commenttext`, `commentraiting`, `commentatorname`) VALUES
+(1,	1,	'Автор жжет!',	4,	'Саша'),
+(2,	1,	'Довольно положительный отзыв о книге.',	5,	'Евгений');
 
 DROP TABLE IF EXISTS `thema`;
 CREATE TABLE `thema` (
@@ -142,4 +146,4 @@ INSERT INTO `thema` (`themaid`, `themaname`) VALUES
 (4,	'Фантастический хоррор'),
 (5,	'Сказка для тинейджеров');
 
--- 2018-07-16 11:44:47
+-- 2018-07-18 12:44:57

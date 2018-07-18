@@ -1,25 +1,33 @@
 <?php
-require_once "Clases.php"; ?>
+require_once "Clases.php";
 
-<html>
-<head>
-    <?php require_once "header.php"; ?>
-</head>
-<body>
-<?php
 $book = new Book();
+$comment = new Comment();
+
+if(isset($_POST['sendcomment'])){
+    echo $_POST['bookid'], $_POST['bookcomment'], $_POST['commentraiting'], $_POST['bookcommentauthor'];
+    $comment->setBookComment($_POST['bookid'], $_POST['bookcomment'], $_POST['commentraiting'], $_POST['bookcommentauthor']);
+}
 
 if(!isset($_GET['bookid'])){
-    echo '<h1>Все книги объединения "Библиоглобус"</h1>';
+    $h1 = 'Все книги объединения "Библиоглобус"';
+    $authors = '';
+    $description ='';
+    $allBiblioteka = new Biblioteka();
+    $books = $allBiblioteka->showContainBooks();
     ?>
 
 <?php
 }
 else if(isset($_GET['bookid'])){
-    echo '<h1>'.$book->getBookName($_GET['bookid']).'</h1>';
-    $book->showBookAuthors(htmlspecialchars($_GET['bookid']));
+    $bId = $_GET['bookid'];
+    $h1 = $book->getBookName($_GET['bookid']);
+    $authors = $book->showBookAuthors(htmlspecialchars($bId));
+    $description = $book->getBookDescription(htmlspecialchars($bId));
+    $books = '';
+    $bibliotecs = $book->getBookBiblioteks($bId);
+    $comments = $comment->showBookComments($bId);
+
 }
-?>
-<?php require_once "js.php"; ?>
-</body>
-</html>
+
+require_once "template-book.php"; ?>

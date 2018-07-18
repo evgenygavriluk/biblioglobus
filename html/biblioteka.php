@@ -1,33 +1,21 @@
 <?php
-require_once "Clases.php"; ?>
+require_once "Clases.php";
 
-<html>
-    <head>
-        <?php require_once "header.php"; ?>
-    </head>
-    <body>
-<?php
-    $biblioteka = new Biblioteka();
+$biblioteka = new Biblioteka();
 
 if(!isset($_GET['bibliotekaid'])){
-    echo '<h1>Библиотеки объединения "Библиоглобус"</h1>';
-    ?>
-
-    <ul>
-    <?php
-    $biblioteka->showBibliotekaList();
-    ?>
-    </ul>
-<?php
+    $h1 = 'Библиотеки объединения "Библиоглобус"';
+    $adress='';
+    $biblioteks = $biblioteka->showBibliotekaList();
+    $books='';
 }
 else if(isset($_GET['bibliotekaid'])){
-    echo '<h1>'.$biblioteka->getBibliotekaName($_GET['bibliotekaid']).'</h1>';
-    echo '<p>'. $biblioteka->getBibliotekaAdress($_GET['bibliotekaid']).'</p>';
+    $h1 = $biblioteka->getBibliotekaName($_GET['bibliotekaid']);
+    $adress = $biblioteka->getBibliotekaAdress($_GET['bibliotekaid']);
+    $biblioteks = '';
 
-    $biblioteka->showContainBooks(htmlspecialchars($_GET['bibliotekaid']));
+    $books = $biblioteka->showContainBooks(htmlspecialchars($_GET['bibliotekaid']));
 
 }
-?>
-    <?php require_once "js.php"; ?>
-    </body>
-</html>
+
+require_once "template-biblioteka.php"; ?>
