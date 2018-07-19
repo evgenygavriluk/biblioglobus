@@ -1,29 +1,4 @@
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="utf-8" />
-    <title><?='biblioglobus.com '.$h1;?></title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <style>
-        h1{text-align: center;}
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 ">
-                Городское библиотечное объединение "Библиоглобус"
-                <form action="search.php" method="get">
-                    <input type="text" name="booksearch" />
-                    <button>Поиск</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</header>
+<?php require_once "header.php"; ?>
 
 <section>
     <div class="container">
@@ -32,7 +7,23 @@
                 <h1>
                     <?=$h1;?>
                 </h1>
-                <?=$books; ?>
+
+                <table id="table" class="table table-bordered table-hover" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                    <thead>
+                    <tr>
+                        <th data-field="author" data-sortable="true">Обложка</th>
+                        <th data-field="author" data-sortable="true">Автор</th>
+                        <th data-field="book" data-filter-control="input" data-sortable="true">Книга</th>
+                        <th data-field="year" data-filter-control="select" data-sortable="true">Год</th>
+                        <th data-field="year" data-filter-control="select" data-sortable="true">Жанр</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <?=$books; ?>
+
+                    </tbody>
+                </table>
             </div>
         </div>
 <?php if(!$authors==''):?>
@@ -58,11 +49,16 @@
                 <h2>Читали? Оставьте отзыв о книге</h2>
                 <form name="commentform" action="" method="post">
                     <label for="bookcommentauthor">Ваше имя:</label>
-                    <input type="text" id="bookcommentauthor" name="bookcommentauthor" class="form-control">
+                    <input type="text" id="bookcommentauthor" name="bookcommentauthor" class="form-control" required maxlength="255">
                     <label for="bookcomment">Отзыв:</label>
-                    <textarea id="bookcomment" name="bookcomment" class="form-control"></textarea>
+                    <textarea id="bookcomment" name="bookcomment" class="form-control" required maxlength="2000"></textarea>
                     <label for="commentraiting">Какую оценку поставите книге?</label>
                     <select id="commentraiting" name="commentraiting">
+                        <option value="10">10 баллов</option>
+                        <option value="9">9 балла</option>
+                        <option value="8">8 балла</option>
+                        <option value="7">7 балла</option>
+                        <option value="6">6 балл</option>
                         <option value="5">5 баллов</option>
                         <option value="4">4 балла</option>
                         <option value="3">3 балла</option>
@@ -83,17 +79,4 @@
 </section>
 <?php endif; ?>
 
-<footer class="navbar-fixed-bottom">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 justify-content-center">
-                <p class="text-center">biblioglobus.com</p>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ></script>
-<script src="js/bootstrap.min.js"></script>
-</body>
-</html>
+<?php require_once "footer.php"; ?>

@@ -221,22 +221,30 @@ class Biblioteka extends Biblioglobus
         $book = new Book();
         $bookList='';
         try{
-            $query = "SELECT b.bookid, b.bookname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid WHERE bb.bibliotekaid = $bId";
+            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid WHERE bb.bibliotekaid = $bId";
             if($bId==0) {
-                $query = "SELECT bookid, bookname FROM book";
+                $query = "SELECT bookid, bookname, bookpublicyear, bookimage FROM book";
             }
             $result = $this->dbh->query($query);
         } catch (PDOException $e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
         }
-        $bookList.='<ul class="list-group">';
+
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $bookList.= '<li class="list-group-item">'.$book->showBookAuthors($elements['bookid']).'<a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
+            $bookList.= '<tr><td><img src="pic/books/'.$elements['bookimage'].'" width="50px"></td><td>'.$book->showBookAuthors($elements['bookid']).'</td><td><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></td><td>'.$elements['bookpublicyear'].'</td></tr>';
         }
-        $bookList.='</ul>';
         return $bookList;
     }
 }
+
+
+
+
+
+
+
+
+
 
 class Comment extends Biblioglobus
 {
