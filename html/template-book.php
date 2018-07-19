@@ -7,7 +7,7 @@
                 <h1>
                     <?=$h1;?>
                 </h1>
-
+<?php if(!$books==''): ?>
                 <table id="table" class="table table-bordered table-hover" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
                     <thead>
                     <tr>
@@ -24,6 +24,7 @@
 
                     </tbody>
                 </table>
+<?php endif; ?>
             </div>
         </div>
 <?php if(!$authors==''):?>

@@ -221,9 +221,9 @@ class Biblioteka extends Biblioglobus
         $book = new Book();
         $bookList='';
         try{
-            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid WHERE bb.bibliotekaid = $bId";
+            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId";
             if($bId==0) {
-                $query = "SELECT bookid, bookname, bookpublicyear, bookimage FROM book";
+                $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema ";
             }
             $result = $this->dbh->query($query);
         } catch (PDOException $e){
@@ -231,7 +231,7 @@ class Biblioteka extends Biblioglobus
         }
 
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $bookList.= '<tr><td><img src="pic/books/'.$elements['bookimage'].'" width="50px"></td><td>'.$book->showBookAuthors($elements['bookid']).'</td><td><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></td><td>'.$elements['bookpublicyear'].'</td></tr>';
+            $bookList.= '<tr><td><img src="pic/books/'.$elements['bookimage'].'" width="50px"></td><td>'.$book->showBookAuthors($elements['bookid']).'</td><td><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></td><td>'.$elements['bookpublicyear'].'</td><td>'.$elements['themaname'].'</td></tr>';
         }
         return $bookList;
     }
