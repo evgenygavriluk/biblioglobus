@@ -48,7 +48,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <h2>Читали? Оставьте отзыв о книге</h2>
-                <form name="commentform" action="" method="post">
+                <form id="commentform" name="commentform" method="post" onsubmit = "return false">
                     <label for="bookcommentauthor">Ваше имя:</label>
                     <input type="text" id="bookcommentauthor" name="bookcommentauthor" class="form-control" required maxlength="255">
                     <label for="bookcomment">Отзыв:</label>
@@ -79,5 +79,6 @@
     </div>
 </section>
 <?php endif; ?>
+
 
 <?php require_once "footer.php"; ?>

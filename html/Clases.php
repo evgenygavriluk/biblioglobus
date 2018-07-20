@@ -240,12 +240,6 @@ class Biblioteka extends Biblioglobus
 
 
 
-
-
-
-
-
-
 class Comment extends Biblioglobus
 {
     function __construct(){
@@ -278,10 +272,8 @@ class Comment extends Biblioglobus
     }
 
     public function setBookComment($bId, $commentText, $commentRaiting=5, $comentatorName){
-        echo $bId, $commentText, $commentRaiting, $comentatorName;
         try{
             $query = "INSERT INTO comment (bookid, commenttext, commentraiting, commentatorname) VALUES ($bId, \"$commentText\", $commentRaiting, \"$comentatorName\")";
-            echo $query;
             $result = $this->dbh->query($query);
         } catch (PDOException $e){
             die('Не удалось записать комментарий: ' . $e->getMessage());

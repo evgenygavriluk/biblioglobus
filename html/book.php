@@ -7,11 +7,6 @@ $books = '';
 $book = new Book();
 $comment = new Comment();
 
-if(isset($_POST['sendcomment'])){
-    echo $_POST['bookid'], $_POST['bookcomment'], $_POST['commentraiting'], $_POST['bookcommentauthor'];
-    $comment->setBookComment($_POST['bookid'], $_POST['bookcomment'], $_POST['commentraiting'], $_POST['bookcommentauthor']);
-}
-
 if(!isset($_GET['bookid'])){
     $h1 = 'Все книги объединения "Библиоглобус"';
     $allBiblioteka = new Biblioteka();
