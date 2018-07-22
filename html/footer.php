@@ -12,6 +12,13 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
+        errorList = {'invalid_bookid':'Неверное значение id книги',
+                     'comment_length_less_five':'Комментарий слишком короткий',
+                     'length_toobig':'Длина комментария не может превышать 2000 символов',
+                     'invalid_raiting':'Рейтинг должен быть от 1-10',
+                     'name_less_two':'Имя не может быть меньше двух букв',
+                     'first_char_is_not_char':'Имя не может начинаться с цифры'
+        };
         console.log("Отправка формы");
         $("#commentform").submit(function() {
             var form_data = $(this).serialize();
@@ -29,9 +36,9 @@
                         document.getElementById("commentform").reset();
                     }
                     else{
-                        for(errorfield in parsed){
-                            field = document.getElementById(errofield);
-                            field.setCustomValidity(parsed[errorfield]);
+                        for(var errorfield in parsed){
+                            field = document.getElementById(errorfield);
+                            field.setCustomValidity(errorList[parsed[errorfield]]);
                         }
                     }
 
