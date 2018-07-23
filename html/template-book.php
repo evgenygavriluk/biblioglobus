@@ -16,6 +16,7 @@
                         <th data-field="book" data-filter-control="input" data-sortable="true">Книга</th>
                         <th data-field="year" data-filter-control="select" data-sortable="true">Год</th>
                         <th data-field="year" data-filter-control="select" data-sortable="true">Жанр</th>
+                        <th data-field="score" data-filter-control="select" data-sortable="true">Рейтинг</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,8 +51,10 @@
                 <h2>Читали? Оставьте отзыв о книге</h2>
                 <form id="commentform" name="commentform" method="post" onsubmit = "return false">
                     <label for="bookcommentauthor">Ваше имя:</label>
+                    <span id="bookcommentauthor_error" class="error"></span>
                     <input type="text" id="bookcommentauthor" name="bookcommentauthor" class="form-control" required maxlength="255">
                     <label for="bookcomment">Отзыв:</label>
+                    <span id="bookcomment_error" class="error"></span>
                     <textarea id="bookcomment" name="bookcomment" class="form-control" required maxlength="2000"></textarea>
                     <label for="commentraiting">Какую оценку поставите книге?</label>
                     <select id="commentraiting" name="commentraiting">
@@ -72,7 +75,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-lg-6">
+            <div id="comments" class="col-lg-6">
                <?=$comments;?>
             </div>
         </div>

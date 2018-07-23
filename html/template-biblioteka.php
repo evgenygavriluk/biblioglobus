@@ -19,6 +19,7 @@
                             <th data-field="book" data-filter-control="input" data-sortable="true">Книга</th>
                             <th data-field="year" data-filter-control="select" data-sortable="true">Год</th>
                             <th data-field="year" data-filter-control="select" data-sortable="true">Жанр</th>
+                            <th data-field="year" data-filter-control="select" data-sortable="true">Рейтинг</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -45,3 +45,15 @@ section{
 .bg-book-image{
     max-width: 400px;
 }
+
+.error{
+    display: none;
+    background-color: red;
+    border: 1px solid red;
+    height: 30px;
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: white;
+}

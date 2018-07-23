@@ -132,6 +132,30 @@ class Book extends Biblioglobus
         return $this->getTableField('bookname', 'bookid', htmlspecialchars($bookid));
     }
 
+    // Возвращает рейтинг книги с bookid = $bookid
+    public function getBookScore($bookid){
+        $commentscnt = $this->getTableField('commentscnt', 'bookid', htmlspecialchars($bookid));
+        $allballs = $this->getTableField('allballs', 'bookid', htmlspecialchars($bookid));
+        return $allballs/$commentscnt;
+    }
+
+    // Записывает новые параметры для рейтинга (кол-во комментариев и общий балл
+    public function setBookScore($bookid, $newBall){
+        $currentBookComments = $this->getTableField('commentscnt', 'bookid', htmlspecialchars($bookid));
+        $newBookComments = $currentBookComments+1;
+
+        $currentAllBalls = $this->getTableField('allballs', 'bookid', htmlspecialchars($bookid));
+        $newAllBalls = $currentAllBalls+$newBall;
+        try{
+            $query = "UPDATE book SET commentscnt=$newBookComments, allballs=$newAllBalls WHERE bookid=$bookid";
+            $result = $this->dbh->query($query);
+        } catch (PDOException$e){
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+
+    }
+
+
     // Возвращает описание книги с bookid = $bookid
     public function getBookDescription($bookid){
         return $this->getTableField('bookdescription', 'bookid', htmlspecialchars($bookid));
@@ -221,9 +245,9 @@ class Biblioteka extends Biblioglobus
         $book = new Book();
         $bookList='';
         try{
-            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId";
+            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId";
             if($bId==0) {
-                $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema ";
+                $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema ";
             }
             $result = $this->dbh->query($query);
         } catch (PDOException $e){
@@ -231,7 +255,8 @@ class Biblioteka extends Biblioglobus
         }
 
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $bookList.= '<tr><td><img src="pic/books/'.$elements['bookimage'].'" width="50px"></td><td>'.$book->showBookAuthors($elements['bookid']).'</td><td><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></td><td>'.$elements['bookpublicyear'].'</td><td>'.$elements['themaname'].'</td></tr>';
+            $score = ($elements['allballs']>0 && $elements['commentscnt']>0)? (float)$elements['allballs']/$elements['commentscnt'] : 'Отзывов пока нет';
+            $bookList.= '<tr><td><img src="pic/books/'.$elements['bookimage'].'" width="50px"></td><td>'.$book->showBookAuthors($elements['bookid']).'</td><td><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></td><td>'.$elements['bookpublicyear'].'</td><td>'.$elements['themaname'].'</td><td>'.$score.'</td></tr>';
         }
         return $bookList;
     }
@@ -271,10 +296,12 @@ class Comment extends Biblioglobus
         return $commentList;
     }
 
-    public function setBookComment($bId, $commentText, $commentRaiting=5, $comentatorName){
+    public function setBookComment($bId, $commentText, $commentRaiting=10, $comentatorName){
         try{
             $query = "INSERT INTO comment (bookid, commenttext, commentraiting, commentatorname) VALUES ($bId, \"$commentText\", $commentRaiting, \"$comentatorName\")";
             $result = $this->dbh->query($query);
+            $book = new Book();
+            $book->setBookScore($bId, $commentRaiting);
         } catch (PDOException $e){
             die('Не удалось записать комментарий: ' . $e->getMessage());
         }

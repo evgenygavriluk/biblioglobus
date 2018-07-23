@@ -33,12 +33,17 @@
                     var parsed = JSON.parse(resp);
                     if(parsed['sendcomment'] == 'ok'){
                         alert('Комментарий успешно добавлен');
+                        getComments(<?=$_GET['bookid'];?>);
                         document.getElementById("commentform").reset();
                     }
                     else{
                         for(var errorfield in parsed){
-                            field = document.getElementById(errorfield);
-                            field.setCustomValidity(errorList[parsed[errorfield]]);
+                            field = document.getElementById(errorfield+'_error');
+                            field.style.display = 'block';
+                            field.innerHTML = errorList[parsed[errorfield]];
+                            document.getElementById(errorfield).addEventListener('input', function(){
+                               this.previousElementSibling.style.display = 'none';
+                            });
                         }
                     }
 
@@ -46,6 +51,21 @@
             });
         });
     });
+
+
+    function getComments(bookId){
+        console.log("Чтение комментариев");
+
+             $.ajax({
+                type: "POST",
+                url: "getcomments.php",
+                data: {bookid:bookId},
+                success: function(resp) {
+                    console.log('Отправлено: ');
+                    document.getElementById('comments').innerHTML = resp;
+                 }
+            });
+    };
 
 </script>
 </body>
