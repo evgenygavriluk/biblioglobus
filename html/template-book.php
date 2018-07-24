@@ -7,25 +7,9 @@
                 <h1>
                     <?=$h1;?>
                 </h1>
-<?php if(!$books==''): ?>
-                <table id="table" class="table table-bordered table-hover" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
-                    <thead>
-                    <tr>
-                        <th data-field="author" data-sortable="true">Обложка</th>
-                        <th data-field="author" data-sortable="true">Автор</th>
-                        <th data-field="book" data-filter-control="input" data-sortable="true">Книга</th>
-                        <th data-field="year" data-filter-control="select" data-sortable="true">Год</th>
-                        <th data-field="year" data-filter-control="select" data-sortable="true">Жанр</th>
-                        <th data-field="score" data-filter-control="select" data-sortable="true">Рейтинг</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <?=$books; ?>
-
-                    </tbody>
-                </table>
-<?php endif; ?>
+<?php if(!$books==''):
+    require_once "booktable.php";
+endif; ?>
             </div>
         </div>
 <?php if(!$authors==''):?>

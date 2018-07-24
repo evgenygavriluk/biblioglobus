@@ -46,7 +46,12 @@ class Biblioglobus
 
     public function getTableCnt($tableName, $counter, $value){
         try{
-            $result = $this->dbh->query("SELECT COUNT(*) FROM $tableName WHERE $counter = $value");
+            $statement = "SELECT COUNT(*) FROM $tableName WHERE $counter = $value";
+            if($counter==0 || $value==0) {
+                $statement = "SELECT COUNT(*) FROM $tableName";
+            }
+            echo $statement;
+            $result = $this->dbh->query($statement);
         } catch (PDOException$e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
         }
@@ -237,17 +242,21 @@ class Biblioteka extends Biblioglobus
 
     // Возвращает количество книг в библиотеке по ее id
     public function getBibliotekaBookCnt($bId){
-        return $this->getTableCnt('biblioteka_book', 'bibliotekaid', $bId);
+        if($bId==0) {
+            return $this->getTableCnt('book',0 , 0);
+        }
+        else return $this->getTableCnt('biblioteka_book', 'bibliotekaid', $bId);
     }
 
     // Показывает все находящиеся в библиотеке книги
-    public function showContainBooks($bId=0){
+    public function showContainBooks($bId=0, $curPage=1, $elementsPerPage=5){
         $book = new Book();
+        $rangeStart = $curPage*$elementsPerPage-$elementsPerPage;
         $bookList='';
         try{
             $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId";
             if($bId==0) {
-                $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema ";
+                $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema LIMIT $elementsPerPage OFFSET $rangeStart";
             }
             $result = $this->dbh->query($query);
         } catch (PDOException $e){
