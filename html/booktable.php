@@ -17,18 +17,21 @@
     <ul class="pagination justify-content-center">
         <?php
 
+            if(!empty($_SERVER['HTTP_QUERYSTRING'])) $param = '&page=';
+            else $param = '?page=';
             if ($currentPage > $firstPage){
-                echo '<li class="page-item"><a class="page-link" href="?page='.($currentPage-1).'">Предыдущая</a></li>';
+                echo '<li class="page-item"><a class="page-link" href="'.$param, ($currentPage-1).'">Предыдущая</a></li>';
             }
 
             for($i=$firstPage; $i<=$allPages; $i++){
                 $active='';
                 if($i==$currentPage) $active ='active';
-                echo '<li class="page-item '.$active.'"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+                echo '<li class="page-item '.$active.'"><a class="page-link" href="'.$param, $i.'">'.$i.'</a></li>';
             }
             if(($currentPage)<$allPages) {
-                echo '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage + 1) . '">Следующая</a></li>';
+                echo '<li class="page-item"><a class="page-link" href="'.$param, ($currentPage + 1) . '">Следующая</a></li>';
             }
+
          ?>
     </ul>
 </nav>

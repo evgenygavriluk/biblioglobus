@@ -46,11 +46,12 @@ class Biblioglobus
 
     public function getTableCnt($tableName, $counter, $value){
         try{
+
             $statement = "SELECT COUNT(*) FROM $tableName WHERE $counter = $value";
-            if($counter==0 || $value==0) {
+            if($value==0) {
+                echo  $tableName, $counter, $value;
                 $statement = "SELECT COUNT(*) FROM $tableName";
             }
-            echo $statement;
             $result = $this->dbh->query($statement);
         } catch (PDOException$e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
@@ -254,7 +255,7 @@ class Biblioteka extends Biblioglobus
         $rangeStart = $curPage*$elementsPerPage-$elementsPerPage;
         $bookList='';
         try{
-            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId";
+            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId LIMIT $elementsPerPage OFFSET $rangeStart";
             if($bId==0) {
                 $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema LIMIT $elementsPerPage OFFSET $rangeStart";
             }
