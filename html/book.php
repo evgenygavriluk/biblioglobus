@@ -20,10 +20,11 @@ if(!isset($_GET['bookid'])){
         $firstPage = 1;
         $currentPage = $_GET['page'];
     }
-
+    $allPages = (int)($allBiblioteka->getBibliotekaBookCnt(0)/$elementsPerPage)+1;
+    if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
     $books = $allBiblioteka->showContainBooks(0, $currentPage, $elementsPerPage);
 
-    $allPages = (int)($allBiblioteka->getBibliotekaBookCnt(0)/$elementsPerPage)+1;
+
 }
 else if(isset($_GET['bookid'])){
     $bId = $_GET['bookid'];

@@ -26,8 +26,10 @@ else if(isset($_GET['bibliotekaid'])){
         $currentPage = $_GET['page'];
     }
 
-    $books = $biblioteka->showContainBooks($_GET['bibliotekaid'], $currentPage, $elementsPerPage);
     $allPages = (int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'])/$elementsPerPage)+1;
+    if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
+    $books = $biblioteka->showContainBooks($_GET['bibliotekaid'], $currentPage, $elementsPerPage);
+
 }
 
 require_once "template-biblioteka.php"; ?>

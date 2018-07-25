@@ -16,20 +16,26 @@
 <nav aria-label="books">
     <ul class="pagination justify-content-center">
         <?php
+             if($_SERVER['SCRIPT_NAME']=='/biblioteka.php'){
+                $params = explode('&', $_SERVER['QUERY_STRING']);
 
-            if(!empty($_SERVER['HTTP_QUERYSTRING'])) $param = '&page=';
-            else $param = '?page=';
+                $href = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?'.$params[0].'&page=';
+            }
+            if($_SERVER['SCRIPT_NAME']=='/book.php'){
+                    $href = '?page=';
+            }
+
             if ($currentPage > $firstPage){
-                echo '<li class="page-item"><a class="page-link" href="'.$param, ($currentPage-1).'">Предыдущая</a></li>';
+                echo '<li class="page-item"><a class="page-link" href="'.$href, ($currentPage-1).'">Предыдущая</a></li>';
             }
 
             for($i=$firstPage; $i<=$allPages; $i++){
                 $active='';
                 if($i==$currentPage) $active ='active';
-                echo '<li class="page-item '.$active.'"><a class="page-link" href="'.$param, $i.'">'.$i.'</a></li>';
+                echo '<li class="page-item '.$active.'"><a class="page-link" href="'.$href, $i.'">'.$i.'</a></li>';
             }
             if(($currentPage)<$allPages) {
-                echo '<li class="page-item"><a class="page-link" href="'.$param, ($currentPage + 1) . '">Следующая</a></li>';
+                echo '<li class="page-item"><a class="page-link" href="'.$href, ($currentPage + 1) . '">Следующая</a></li>';
             }
 
          ?>

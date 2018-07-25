@@ -49,8 +49,7 @@ class Biblioglobus
 
             $statement = "SELECT COUNT(*) FROM $tableName WHERE $counter = $value";
             if($value==0) {
-                echo  $tableName, $counter, $value;
-                $statement = "SELECT COUNT(*) FROM $tableName";
+                   $statement = "SELECT COUNT(*) FROM $tableName";
             }
             $result = $this->dbh->query($statement);
         } catch (PDOException$e){
@@ -143,6 +142,33 @@ class Book extends Biblioglobus
         $commentscnt = $this->getTableField('commentscnt', 'bookid', htmlspecialchars($bookid));
         $allballs = $this->getTableField('allballs', 'bookid', htmlspecialchars($bookid));
         return $allballs/$commentscnt;
+    }
+
+    // Возвращает список 5 самых рейтинговых книг
+    public function getBestFiveBooks(){
+        $bookScore = array();
+        try{
+            $result = $this->dbh->query("SELECT * FROM book");
+        } catch (PDOException$e){
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+        foreach ($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements)
+        {
+            if($elements['commentscnt']>0) {
+                $score = $elements['allballs'] / $elements['commentscnt'];
+            } else $score = 0;
+            array_push($bookScore, ['bookid'=>$elements['bookid'], 'bookname'=>$elements['bookname'], 'score'=>$score]);
+        }
+
+        // Сортируем рейтинг по убыванию
+        usort($bookScore, function($a, $b){
+            if($a['score'] === $b['score'])
+                return 0;
+
+            return $a['score'] < $b['score'] ? 1 : -1;
+        });
+
+        return $bookScore;
     }
 
     // Записывает новые параметры для рейтинга (кол-во комментариев и общий балл
@@ -315,6 +341,29 @@ class Comment extends Biblioglobus
         } catch (PDOException $e){
             die('Не удалось записать комментарий: ' . $e->getMessage());
         }
+    }
+
+    public function getLastFiveBookComments(){
+        $bookComments = array();
+        try{
+            $query = "SELECT c.commenttext, c.commentraiting, c.commentatorname, b.bookid, b.bookname FROM comment as c JOIN book b ON c.bookid=b.bookid ORDER BY commentid DESC";
+            $result = $this->dbh->query($query);
+        } catch (PDOException $e){
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+        foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
+            $bookComments += $row;
+        }
+        return $bookComments;
+    }
+
+    public function showLastFiveBookComments(){
+        $commentList ='';
+        foreach($this->getLastFiveBookComments() as $list=>$elements){
+            $commentList .= '<div class="card border-secondary mb-3" style="max-width: 18rem;"><div class="card-header">'.$elements['commentatorname'].' прокомментировал книгу <a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></div><div class="card-body"><p class="card-text">'.$elements['commenttext'].'</p><small>Поставил баллов: '.$elements['commentraiting'].'</small></div></div>';
+
+        }
+        return $commentList;
     }
 
 }
