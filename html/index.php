@@ -8,8 +8,7 @@ $books = new Book();
 
 $lastFiveComments = $comments->showLastFiveBookComments();
 
-$bestFiveBooks = $books->getBestFiveBooks();
-
+$bestFiveBooks = $books->showBestFiveBooks();
 
 
 require_once "template-index.php"; ?>

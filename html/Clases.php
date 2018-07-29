@@ -157,7 +157,7 @@ class Book extends Biblioglobus
             if($elements['commentscnt']>0) {
                 $score = $elements['allballs'] / $elements['commentscnt'];
             } else $score = 0;
-            array_push($bookScore, ['bookid'=>$elements['bookid'], 'bookname'=>$elements['bookname'], 'score'=>$score]);
+            array_push($bookScore, ['bookid'=>$elements['bookid'], 'bookname'=>$elements['bookname'], 'bookimage'=>$elements['bookimage'],'score'=>$score]);
         }
 
         // Сортируем рейтинг по убыванию
@@ -168,7 +168,18 @@ class Book extends Biblioglobus
             return $a['score'] < $b['score'] ? 1 : -1;
         });
 
-        return $bookScore;
+
+        return array_slice($bookScore, 0, 5);
+        //return $bookScore;
+    }
+
+    // Показывает список 5 самых рейтинговых книг
+    public function showBestFiveBooks(){
+        $bestBooksList = '';
+        foreach($this->getBestFiveBooks() as $list=>$elements){
+            $bestBooksList .= '<div class="card border-secondary mb-3" style="width: 18rem;"><img class="card-img-top" src="pic/books/'.$elements['bookimage'].'" alt="'.$elements['bookname'].'"><div class="card-body"><a href="book.php?bookid='.$elements['bookid'].'" class="btn btn-primary">Перейти к книге</a></div></div>';
+        }
+        return $bestBooksList;
     }
 
     // Записывает новые параметры для рейтинга (кол-во комментариев и общий балл

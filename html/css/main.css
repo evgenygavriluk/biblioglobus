@@ -57,3 +57,7 @@ section{
     margin-bottom: 5px;
     color: white;
 }
+
+.card-img-top{
+    max-height: 220px;
+}
