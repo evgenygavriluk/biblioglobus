@@ -87,9 +87,70 @@ class Author extends Biblioglobus
         return $authorList;
     }
 
+    // Возвращает список авторов
+    public function getAuthors($where)
+    {
+        $tableList = array();
+        echo 'where = '.$where;
+
+        if ($where == 0) $query = "SELECT * FROM author";
+        else $query = "SELECT * FROM author AS a JOIN book_author AS ba ON a.authorid=ba.authorid JOIN biblioteka_book AS bb ON bb.bookid = ba.bookid WHERE bb.bibliotekaid=$where";
+        echo 'query = '.$query;
+        try {
+            $result = $this->dbh->query($query);
+        } catch (PDOException$e) {
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+       while($row = $result->fetchAll(PDO::FETCH_ASSOC)) {
+            $tableList += $row;
+        }
+        return $tableList;
+    }
+
     // Возвращает имя автора по его id
     public function getAuthorName($authorId){
         return $this->getTableField('authorname', 'authorid', htmlspecialchars($authorId));
+    }
+
+    // Возвращает 5 авторов, написавших больше всего книг
+    public function getFiveAuthorsHaveMoreBooks(){
+        $authorBooksCnt=array();
+        try{
+            $query = "SELECT a.authorid, a.authorname, a.authorimage, b.bookid FROM book as b JOIN book_author ba ON b.bookid = ba.bookid JOIN author a ON a.authorid = ba.authorid";
+            $result = $this->dbh->query($query);
+        } catch (PDOException$e){
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+
+        foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
+            if(!array_key_exists($elements['authorid'], $authorBooksCnt)) {
+                $cnt = 1;
+
+                $authorBooksCnt[$elements['authorid']] = [
+                    'authorid' => $elements['authorid'],
+                    'authorname' => $elements['authorname'],
+                    'authorimage' => $elements['authorimage'],
+                    'books' => $cnt];
+            } else {
+                $cnt = $authorBooksCnt[$elements['authorid']]['books'];
+                $cnt++;
+                $authorBooksCnt[$elements['authorid']]['books'] = $cnt;
+            }
+        }
+
+        usort($authorBooksCnt, function ($item1, $item2) {
+            if ($item1['books'] == $item2['books']) return 0;
+            return $item1['books'] > $item2['books'] ? -1 : 1;
+        });
+        return array_slice($authorBooksCnt, 0, 5);
+    }
+
+    public function showFiveAuthorsHaveMoreBooks(){
+        $fiveAuthorsList = '';
+        foreach($this->getFiveAuthorsHaveMoreBooks() as $list=>$elements){
+            $fiveAuthorsList .= '<div class="card border-secondary mb-3" style="width: 18rem;"><img class="card-img-top" src="pic/authors/'.$elements['authorimage'].'" alt="'.$elements['authorname'].'"><div class="card-body"><h5>'.$elements['authorname'].'</h5><a href="author.php?authorid='.$elements['authorid'].'" class="btn btn-primary">Об авторе</a></div></div>';
+        }
+        return $fiveAuthorsList;
     }
 
     // Показывает все книги автора с authorId = $authorId
@@ -278,24 +339,42 @@ class Biblioteka extends Biblioglobus
         return $this->getTableField('bibliotekaadress', 'bibliotekaid', htmlspecialchars($bId));
     }
 
-    // Возвращает количество книг в библиотеке по ее id
-    public function getBibliotekaBookCnt($bId){
+    // Возвращает количество книг в библиотеке по ее id - первая версия метода, без выборки по автору
+    /*public function getBibliotekaBookCnt($bId){
         if($bId==0) {
             return $this->getTableCnt('book',0 , 0);
         }
         else return $this->getTableCnt('biblioteka_book', 'bibliotekaid', $bId);
+    }*/
+
+    // Возвращает количество книг в библиотеке по ее id и id автора
+    public function getBibliotekaBookCnt($bId, $authorId){
+        try{
+            if($bId==0 and $authorId==0) $statement = "SELECT COUNT(*) FROM book";
+            if($bId==0 and $authorId>0)  $statement = "SELECT COUNT(*) FROM book AS b JOIN book_author ba ON ba.bookid = b.bookid WHERE ba.authorid = $authorId";
+            if($bId>0  and $authorId==0) $statement = "SELECT COUNT(*) FROM biblioteka_book WHERE bibliotekaid = $bId";
+            if($bId>0  and $authorId>0)  $statement = "SELECT COUNT(*) FROM biblioteka_book AS bb JOIN author a ON a.bookid = bb.bookid WHERE bibliotekaid = $bId AND authorid=$authorId";
+            echo $statement;
+
+            $result = $this->dbh->query($statement);
+        } catch (PDOException$e){
+            die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
+        }
+
+        return $result->fetchColumn();
+
     }
 
     // Показывает все находящиеся в библиотеке книги
-    public function showContainBooks($bId=0, $curPage=1, $elementsPerPage=5){
+    public function showContainBooks($bId=0, $curPage=1, $elementsPerPage=5, $authorId=0){
         $book = new Book();
         $rangeStart = $curPage*$elementsPerPage-$elementsPerPage;
         $bookList='';
         try{
-            $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId LIMIT $elementsPerPage OFFSET $rangeStart";
-            if($bId==0) {
-                $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema LIMIT $elementsPerPage OFFSET $rangeStart";
-            }
+            if($bId>0 and $authorId==0)  $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId LIMIT $elementsPerPage OFFSET $rangeStart";
+            if($bId==0 and $authorId==0) $query = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema LIMIT $elementsPerPage OFFSET $rangeStart";
+
+
             $result = $this->dbh->query($query);
         } catch (PDOException $e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());

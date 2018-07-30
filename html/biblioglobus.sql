@@ -9,21 +9,22 @@ DROP TABLE IF EXISTS `author`;
 CREATE TABLE `author` (
   `authorid` int(10) NOT NULL AUTO_INCREMENT,
   `authorname` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
+  `authorimage` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`authorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `author` (`authorid`, `authorname`) VALUES
-(1,	'Аркадий Гайдар'),
-(2,	'Юрий Олеша'),
-(3,	'Виктор Гюго'),
-(4,	'Алексей Толстой'),
-(5,	'А.П. Чехов'),
-(6,	'Илья Ильф'),
-(7,	'Евгений Петров'),
-(8,	'А.С. Пушкин'),
-(9,	'Эмили Бронте'),
-(10,	'Уильям Шекспир'),
-(11,	'Маргарет Митчелл');
+INSERT INTO `author` (`authorid`, `authorname`, `authorimage`) VALUES
+(1,	'Аркадий Гайдар',	'gaidar.jpg'),
+(2,	'Юрий Олеша',	'olesha.jpg'),
+(3,	'Виктор Гюго',	'gugo.jpg'),
+(4,	'Алексей Толстой',	'atolstoy.jpg'),
+(5,	'А.П. Чехов',	'chehov.jpg'),
+(6,	'Илья Ильф',	'ilf.jpg'),
+(7,	'Евгений Петров',	'epetrov.jpg'),
+(8,	'А.С. Пушкин',	'aspuskin.jpg'),
+(9,	'Эмили Бронте',	'ebronte.jpg'),
+(10,	'Уильям Шекспир',	'ushekspir.jpg'),
+(11,	'Маргарет Митчелл',	'mmitchell.jpg');
 
 DROP TABLE IF EXISTS `biblioteka`;
 CREATE TABLE `biblioteka` (
@@ -166,4 +167,4 @@ INSERT INTO `thema` (`themaid`, `themaname`) VALUES
 (4,	'Фантастический хоррор'),
 (5,	'Сказка для тинейджеров');
 
--- 2018-07-29 21:40:37
+-- 2018-07-30 12:20:55

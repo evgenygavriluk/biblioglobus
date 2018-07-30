@@ -8,8 +8,32 @@
                     <?=$h1;?>
                 </h1>
 <?php if(!$books==''):
+    // Формируем SELECT со списком авторов
+?>
+<form name="author" action="" method="get">
+    <select id="author" name="author" onchange='this.form.submit();'>
+        <option value="0">Выберете автора</option>
+<?php
+    foreach($author->getAuthors(0) as $list=>$elements){
+        $selected='';
+        if(isset($_GET['author']) and $elements['authorid']==$_GET['author']) $selected = 'selected';
+            echo '<option value="' . $elements['authorid'] . '" '.$selected.'>' . $elements['authorname'] . '</option>';
+    }
+?>
+
+    </select>
+</form>
+
+
+<?php
     require_once "booktable.php";
 endif; ?>
+                <pre>
+                    <?php
+
+                    var_dump($author->getAuthors(0)) ;
+                    ?>
+                </pre>
             </div>
         </div>
 <?php if(!$authors==''):?>
