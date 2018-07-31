@@ -12,7 +12,7 @@
 ?>
 <form name="author" action="" method="get">
     <select id="author" name="author" onchange='this.form.submit();'>
-        <option value="0">Выберете автора</option>
+        <option value="0">Все авторы</option>
 <?php
     foreach($author->getAuthors(0) as $list=>$elements){
         $selected='';
@@ -28,12 +28,7 @@
 <?php
     require_once "booktable.php";
 endif; ?>
-                <pre>
-                    <?php
 
-                    var_dump($author->getAuthors(0)) ;
-                    ?>
-                </pre>
             </div>
         </div>
 <?php if(!$authors==''):?>

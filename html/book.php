@@ -19,21 +19,17 @@ if(!isset($_GET['bookid'])){
         $currentPage = 1;
     } else {
         $firstPage = 1;
-        $currentPage = $_GET['page'];
+        $currentPage = (int)$_GET['page'];
     }
     if(!isset($_GET['author'])){
         $authorid = 0;
     } else {
-        $authorid = $_GET['author'];
+        $authorid = (int)$_GET['author'];
     }
     if ((int)($allBiblioteka->getBibliotekaBookCnt(0, $authorid)%$elementsPerPage) ==0) $allPages = (int)($allBiblioteka->getBibliotekaBookCnt(0,$authorid)/$elementsPerPage);
     else $allPages = (int)($allBiblioteka->getBibliotekaBookCnt(0,$authorid)/$elementsPerPage)+1;
     if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
-    $books = $allBiblioteka->showContainBooks(0, $currentPage, $elementsPerPage);
-
-
-
-
+    $books = $allBiblioteka->showContainBooks(0, $currentPage, $elementsPerPage, $authorid);
 }
 else if(isset($_GET['bookid'])){
     $bId = $_GET['bookid'];

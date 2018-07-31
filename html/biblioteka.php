@@ -5,6 +5,7 @@ $books='';
 $biblioteks = '';
 
 $biblioteka = new Biblioteka();
+$author = new Author();
 
 if(!isset($_GET['bibliotekaid'])){
     $h1 = 'Библиотеки объединения "Библиоглобус"';
@@ -25,10 +26,14 @@ else if(isset($_GET['bibliotekaid'])){
         $firstPage = 1;
         $currentPage = $_GET['page'];
     }
-
-    $allPages = (int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'])/$elementsPerPage)+1;
+    if(!isset($_GET['author'])){
+        $authorid = 0;
+    } else {
+        $authorid = (int)$_GET['author'];
+    }
+    $allPages = (int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'], $authorid)/$elementsPerPage)+1;
     if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
-    $books = $biblioteka->showContainBooks($_GET['bibliotekaid'], $currentPage, $elementsPerPage);
+    $books = $biblioteka->showContainBooks($_GET['bibliotekaid'], $currentPage, $elementsPerPage, $authorid);
 
 }
 
