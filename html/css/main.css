@@ -61,3 +61,11 @@ section{
 .card-img-top{
     max-height: 220px;
 }
+
+i{
+    margin-right: 20px;
+}
+
+#sort_form{
+    display: block;
+}

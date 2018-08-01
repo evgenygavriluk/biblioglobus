@@ -391,27 +391,30 @@ class Biblioteka extends Biblioglobus
     }
 
     // Показывает все находящиеся в библиотеке книги
-    public function showContainBooks($bId=0, $curPage=1, $elementsPerPage=5, $authorId=0){
+    public function showContainBooks($bId=0, $curPage=1, $elementsPerPage=5, $authorId=0, $reitingSort=0){
         $book = new Book();
         $rangeStart = $curPage*$elementsPerPage-$elementsPerPage;
         $bookList='';
         $sql = '';
 
+        if($reitingSort==0) $sort ='';
+        else $sort='ORDER BY allballs/commentscnt DESC';
+
         // Все книги из библиотеки bId
         if($bId>0 && $authorId==0) {
-            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId LIMIT $elementsPerPage OFFSET $rangeStart";
+            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema WHERE bb.bibliotekaid = $bId $sort LIMIT $elementsPerPage OFFSET $rangeStart";
         }
         // Все книги какие есть
         if($bId==0 && $authorId==0) {
-            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema LIMIT $elementsPerPage OFFSET $rangeStart";
+            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema $sort LIMIT $elementsPerPage OFFSET $rangeStart";
         }
         // Все книги автора authorId
         if($bId==0 && $authorId>0) {
-            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema JOIN book_author ba ON ba.bookid = b.bookid WHERE ba.authorid = $authorId LIMIT $elementsPerPage OFFSET $rangeStart";
+            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN thema t ON t.themaid = b.bookthema JOIN book_author ba ON ba.bookid = b.bookid WHERE ba.authorid = $authorId $sort LIMIT $elementsPerPage OFFSET $rangeStart";
         }
         // Книги автора authorId из библиотеки bId
         if($bId>0 && $authorId>0){
-            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema JOIN book_author ba ON ba.bookid = b.bookid WHERE bb.bibliotekaid = $bId AND ba.authorid = $authorId LIMIT $elementsPerPage OFFSET $rangeStart";
+            $sql = "SELECT b.bookid, b.bookname, b.bookpublicyear, b.bookimage, b.commentscnt, b.allballs, t.themaname FROM book as b JOIN biblioteka_book bb ON bb.bookid = b.bookid JOIN thema t ON t.themaid = b.bookthema JOIN book_author ba ON ba.bookid = b.bookid WHERE bb.bibliotekaid = $bId AND ba.authorid = $authorId $sort LIMIT $elementsPerPage OFFSET $rangeStart";
         }
         //echo $sql;
 

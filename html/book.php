@@ -26,10 +26,15 @@ if(!isset($_GET['bookid'])){
     } else {
         $authorid = (int)$_GET['author'];
     }
+    if(isset($_GET['sort_type'])) $sortRule = $_GET['sort_type'];
+    else $sortRule = 0;
+
     if ((int)($allBiblioteka->getBibliotekaBookCnt(0, $authorid)%$elementsPerPage) ==0) $allPages = (int)($allBiblioteka->getBibliotekaBookCnt(0,$authorid)/$elementsPerPage);
     else $allPages = (int)($allBiblioteka->getBibliotekaBookCnt(0,$authorid)/$elementsPerPage)+1;
     if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
-    $books = $allBiblioteka->showContainBooks(0, $currentPage, $elementsPerPage, $authorid);
+
+
+    $books = $allBiblioteka->showContainBooks(0, $currentPage, $elementsPerPage, $authorid, $sortRule);
 }
 else if(isset($_GET['bookid'])){
     $bId = $_GET['bookid'];

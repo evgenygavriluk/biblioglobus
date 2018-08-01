@@ -88,3 +88,11 @@ endif; ?>
 
 
 <?php require_once "footer.php"; ?>
+<script>
+    $("#sort").click(function() {
+        if($("#sort_type").val() == 0) $("#sort_type").val(1);
+        else $("#sort_type").val(0);
+        $("#sort_form").submit();
+        console.log($("#sort_type").val());
+    });
+</script>

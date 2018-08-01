@@ -21,7 +21,9 @@ if(!isset($_GET['authorid'])){
     if ((int)($author->getAuthorsCnt()%$elementsPerPage) ==0) $allPages = (int)($author->getAuthorsCnt()/$elementsPerPage);
     else $allPages = (int)($author->getAuthorsCnt()/$elementsPerPage)+1;
     if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
-    $authors = $author->showAuthorList($currentPage, $elementsPerPage);
+    if(isset($_GET['sort_type'])) $sortRule = $_GET['sort_type'];
+    else $sortRule = 0;
+    $authors = $author->showAuthorList($currentPage, $elementsPerPage, $sortRule);
 }
 else if(isset($_GET['authorid'])){
     $h1=$author->getAuthorName(htmlspecialchars($_GET['authorid']));
