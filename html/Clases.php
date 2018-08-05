@@ -181,17 +181,34 @@ class Author extends Biblioglobus
     // Показывает все книги автора с authorId = $authorId
     public function showAuthorBooks($authorId){
         $authorBooks='';
+        $soauthorBooks='';
+        $book = new Book();
         try{
-            $query = "SELECT b.bookid, b.bookname FROM book as b JOIN book_author ba ON b.bookid = ba.bookid JOIN author a ON a.authorid = ba.authorid WHERE a.authorid = $authorId";
+            $query = "SELECT b.bookid, b.bookname, b.bookimage FROM book as b JOIN book_author ba ON b.bookid = ba.bookid JOIN author a ON a.authorid = ba.authorid WHERE a.authorid = $authorId";
             $result = $this->dbh->query($query);
         } catch (PDOException$e){
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
         }
         $authorBooks.='<ul class="list-group">';
+
+        $soauthorBooks.='<ul class="list-group"><h5>Книги в соавторстве</h5>';
+
+        $soauthorBooksCnt=0;
+
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $authorBooks.='<li class="list-group-item"><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
+            if (count($book->getBookAuthors($elements['bookid']))==1){
+                $authorBooks.='<li class="list-group-item"><img src="pic/books/'.$elements['bookimage'].'" width="50px"><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
+                }
+            else if(count($book->getBookAuthors($elements['bookid']))>1){
+                $soauthorBooksCnt++;
+                $soauthorBooks.='<li class="list-group-item"><img src="pic/books/'.$elements['bookimage'].'" width="50px"><a href="book.php?bookid='.$elements['bookid'].'">'.$elements['bookname'].'</a></li>';
+            }
         }
         $authorBooks.='</ul>';
+
+        $soauthorBooks.='</ul>';
+
+        if ($soauthorBooksCnt>0) return $authorBooks.$soauthorBooks;
         return $authorBooks;
     }
 }

@@ -15,7 +15,7 @@
                     <input type="hidden" name="bibliotekaid" value="<?=$_GET['bibliotekaid'];?>">
                 <?php endif;?>
                 <?php if(isset($_GET['author'])): ?>
-                    <input type="hidden" name="page" value="<?=(isset($_GET['author']))? $_GET['author']:'';?>">
+                    <input type="hidden" name="author" value="<?=(isset($_GET['author']))? $_GET['author']:'';?>">
                 <?php endif;?>
 
 
