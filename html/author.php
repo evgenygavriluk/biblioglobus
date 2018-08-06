@@ -1,5 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['userid'])) Header("Location: /");
+
 require_once "Clases.php";
+
 $books = '';
 $authors = '';
 

@@ -33,7 +33,7 @@
                     var parsed = JSON.parse(resp);
                     if(parsed['sendcomment'] == 'ok'){
                         alert('Комментарий успешно добавлен');
-                        getComments(<?=$_GET['bookid'];?>);
+                        getComments(<?php if(isset($_GET['bookid'])) echo $_GET['bookid'];?>);
                         document.getElementById("commentform").reset();
                     }
                     else{
@@ -52,6 +52,73 @@
         });
     });
 
+    $(document).ready(function(){
+        errorList = {'invalid_email':'Пользователь с таким email существует'};
+        console.log("Отправка формы");
+        $("#registrationform").submit(function() {
+            var form_data = $(this).serialize();
+            console.log('Данные пошли: '+form_data);
+            $.ajax({
+                type: "POST",
+                url: "registration.php",
+                data: form_data,
+                success: function(resp) {
+                    console.log('Отправка отработала');
+                    console.log(resp);
+                    var parsed = JSON.parse(resp);
+                    if(parsed['user_registration'] == 'ok'){
+                        alert('Пользователь успешно добавлен. Теперь Вы можете войти на сайт');
+                        document.getElementById("registrationform").reset();
+                        $('#myTab a[href="#enter"]').tab('show');
+                    }
+                    else{
+                        for(var errorfield in parsed){
+                            field = document.getElementById(errorfield+'_error');
+                            field.style.display = 'block';
+                            field.innerHTML = errorList[parsed[errorfield]];
+                            document.getElementById(errorfield).addEventListener('input', function(){
+                                this.previousElementSibling.style.display = 'none';
+                            });
+                        }
+                    }
+
+                }
+            });
+        });
+    });
+
+    $(document).ready(function(){
+        errorList = {'invalid_email':'Неверное имя пользователя или пароль'};
+        console.log("Отправка формы");
+        $("#enterform").submit(function() {
+            var form_data = $(this).serialize();
+            console.log('Данные пошли: '+form_data);
+            $.ajax({
+                type: "POST",
+                url: "enter.php",
+                data: form_data,
+                success: function(resp) {
+                    console.log('Отправка отработала');
+                    var parsed = JSON.parse(resp);
+                    console.log(resp);
+                    if(parsed['user_registration'] == 'ok'){
+                        alert('Добро пожаловать на сайт');
+                    }
+                    else{
+                        for(var errorfield in parsed){
+                            field = document.getElementById(errorfield+'_error');
+                            field.style.display = 'block';
+                            field.innerHTML = errorList[parsed[errorfield]];
+                            document.getElementById(errorfield).addEventListener('input', function(){
+                                this.previousElementSibling.style.display = 'none';
+                            });
+                        }
+                    }
+
+                }
+            });
+        });
+    });
 
     function getComments(bookId){
         console.log("Чтение комментариев");

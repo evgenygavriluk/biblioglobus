@@ -90,6 +90,23 @@ INSERT INTO `book` (`bookid`, `bookname`, `bookpublicyear`, `bookpages`, `bookth
 (9,	'Ромео и Джульетта',	'1988',	160,	5,	'«Роме́о и Джулье́тта» — трагедия Уильяма Шекспира, рассказывающая о любви юноши и девушки из двух враждующих старинных родов — Монтекки и Капулетти.',	'romeojulietta.jpg',	NULL,	NULL),
 (10,	'Унесенные ветром',	'2000',	500,	4,	'Могучие ветры Гражданской войны в один миг уносят беззаботную юность южанки Скарлетт О`Хара, когда привычный шум балов сменяется грохотом канонад на подступах к родному дому. Для молодой женщины, вынужденной бороться за новую жизнь на разоренной земле, испытания и лишения становятся шансом переосмыслить идеалы, обрести веру в себя и найти настоящую любовь.',	'uvetrom.jpg',	NULL,	NULL);
 
+DROP TABLE IF EXISTS `bookuser`;
+CREATE TABLE `bookuser` (
+  `userid` mediumint(5) NOT NULL AUTO_INCREMENT,
+  `useremail` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
+  `userpassword` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `userfirstname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `userlastname` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `bookuser` (`userid`, `useremail`, `userpassword`, `userfirstname`, `userlastname`) VALUES
+(1,	'evgeny_gavriluk@mail.ru',	'655d8a37e5f77303dec2ba78b8305f6f',	'Евгений',	'Гаврилюк'),
+(2,	'tdud@list.ru',	'655d8a37e5f77303dec2ba78b8305f6f',	'Марк',	'Твен'),
+(3,	'bit@home.tula.net',	'25d55ad283aa400af464c76d713c07ad',	'Евгений',	'Гаврилюк'),
+(4,	'bit@home.tula.ru',	'25d55ad283aa400af464c76d713c07ad',	'Евгений',	'Гаврилюк'),
+(5,	'domvaleksine@mail.ru',	'2060b18c89b6ccb280c337c3e4770552',	'Петя',	'Фомин');
+
 DROP TABLE IF EXISTS `book_author`;
 CREATE TABLE `book_author` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -167,4 +184,4 @@ INSERT INTO `thema` (`themaid`, `themaname`) VALUES
 (4,	'Фантастический хоррор'),
 (5,	'Сказка для тинейджеров');
 
--- 2018-07-30 12:20:55
+-- 2018-08-06 12:47:00

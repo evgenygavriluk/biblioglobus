@@ -1,16 +1,26 @@
 <?php
+session_start();
 require_once "Clases.php";
 
+echo 'userid = '.$_SESSION['userid'];
 $h1 = 'Главная';
 
-$comments = new Comment();
-$books = new Book();
-$author = new Author();
+if(!isset($_SESSION['userid']))
+{
+    require_once "authorization-form.php";
+}
+else {
 
-$lastFiveComments = $comments->showLastFiveBookComments();
+    $comments = new Comment();
+    $books = new Book();
+    $author = new Author();
 
-$bestFiveBooks = $books->showBestFiveBooks();
+    $lastFiveComments = $comments->showLastFiveBookComments();
 
-$popularAuthors = $author->showFiveAuthorsHaveMoreBooks();
+    $bestFiveBooks = $books->showBestFiveBooks();
 
-require_once "template-index.php"; ?>
+    $popularAuthors = $author->showFiveAuthorsHaveMoreBooks();
+
+    require_once "template-index.php";
+}
+?>
