@@ -566,9 +566,8 @@ class User extends Biblioglobus
             die('Не удалось прочитать записи из таблицы: ' . $e->getMessage());
         }
         foreach($row = $result->fetchAll(PDO::FETCH_ASSOC) as $list=>$elements){
-            $userData = $row['userid'];
+            $userData = $elements['userid'];
         }
-        echo $userData;
         return $userData;
     }
 }

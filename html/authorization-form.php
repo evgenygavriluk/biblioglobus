@@ -13,7 +13,7 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div role="tabpanel" class="tab-pane fade active show" id="enter" aria-labelledby="home-tab" aria-expanded="true">
-                        <form name="enterform" action="" method="post">
+                        <form id="enterform" name="enterform" method="post" onsubmit="return false">
                             <div class="form-group">
                                 <label for="enterEmail">e-mail</label>
                                 <span id="enterEmail_error" class="error"></span>

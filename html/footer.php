@@ -19,8 +19,8 @@
                      'name_less_two':'Имя не может быть меньше двух букв',
                      'first_char_is_not_char':'Имя не может начинаться с цифры'
         };
-        console.log("Отправка формы");
         $("#commentform").submit(function() {
+            console.log("Отправка формы");
             var form_data = $(this).serialize();
             console.log('Данные пошли: '+form_data);
             $.ajax({
@@ -54,8 +54,8 @@
 
     $(document).ready(function(){
         errorList = {'invalid_email':'Пользователь с таким email существует'};
-        console.log("Отправка формы");
         $("#registrationform").submit(function() {
+            console.log("Отправка формы регистрации нового пользователя");
             var form_data = $(this).serialize();
             console.log('Данные пошли: '+form_data);
             $.ajax({
@@ -89,8 +89,8 @@
 
     $(document).ready(function(){
         errorList = {'invalid_email':'Неверное имя пользователя или пароль'};
-        console.log("Отправка формы");
         $("#enterform").submit(function() {
+            console.log("Отправка формы входа на сайт");
             var form_data = $(this).serialize();
             console.log('Данные пошли: '+form_data);
             $.ajax({
@@ -99,10 +99,12 @@
                 data: form_data,
                 success: function(resp) {
                     console.log('Отправка отработала');
-                    var parsed = JSON.parse(resp);
                     console.log(resp);
-                    if(parsed['user_registration'] == 'ok'){
+                    var parsed = JSON.parse(resp);
+
+                    if(parsed['enterEmail'] == 'ok'){
                         alert('Добро пожаловать на сайт');
+                        location.reload();
                     }
                     else{
                         for(var errorfield in parsed){
