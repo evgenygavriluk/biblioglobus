@@ -23,19 +23,18 @@
                                 <label for="enterPassword">Пароль</label>
                                 <input type="password" class="form-control" id="enterPassword" name="enterPassword">
                             </div>
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <div class="main-checkbox">
                                     <input value="None" id="enterCheckbox" name="enterCheckbox" type="checkbox">
                                     <label for="centerCheckbox"><span class="text">Запомнить меня на этом компьютере</span></label>
                                 </div>
-
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <button type="submit" id="enterSubmit" class="btn btn-default">Войти</button>
                             </div>
-                            <div class="form-group forgot-pass">
+                            <!--<div class="form-group forgot-pass">
                                 <a href="forgotpassword">Восстановить пароль</a>
-                            </div>
+                            </div>-->
                         </form>
                     </div>
                     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="profile-tab" aria-expanded="false">

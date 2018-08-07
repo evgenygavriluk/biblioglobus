@@ -414,8 +414,10 @@ class Biblioteka extends Biblioglobus
         $bookList='';
         $sql = '';
 
-        if($reitingSort==0) $sort ='';
+        if($reitingSort==0) $sort ='ORDER BY allballs/commentscnt';
         else $sort='ORDER BY allballs/commentscnt DESC';
+
+
 
         // Все книги из библиотеки bId
         if($bId>0 && $authorId==0) {

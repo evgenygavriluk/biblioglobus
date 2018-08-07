@@ -43,7 +43,7 @@
                     $href = '?page=';
             }
             if(isset($_GET['sort_type'])) {
-                $sort = '&sort_type'.$_GET['sort_type'];
+                $sort = '&sort_type='.$_GET['sort_type'];
             }
             else $sort='';
 

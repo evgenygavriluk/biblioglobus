@@ -7,21 +7,21 @@
 ##Структура папок и файлов
 
 / -    
-    /js  - 
-    /css - 
-    /pic - изображения, используемые в проекте
-        /authors - изображения авторов
+    /js  - <br>
+    /css - <br>
+    /pic - изображения, используемые в проекте<br>
+        /authors - изображения авторов<br>
         /books   - изображения обложек книг
 
-##
-PHP 7.2
+## Окружение
+PHP 7.2<br>
 Nginx 1.14.0 (Ubuntu)
 
 ##База данных
 
 Для работы проекта используется база данных biblioglobus.sql, дамп находится в корне
-        host = 'localhost';
-        db   = 'biblioglobus';
-        user = 'egavrilyuk';
-        pass = 'Etik53vT#*1980';
-        charset = 'utf8';
+        host = 'localhost';<br>
+        db   = 'biblioglobus';<br>
+        user = 'egavrilyuk';<br>
+        pass = 'Etik53vT#*1980';<br>
+        charset = 'utf8';<br>

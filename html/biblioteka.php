@@ -37,7 +37,9 @@ else if(isset($_GET['bibliotekaid'])){
     if(isset($_GET['sort_type'])) $sortRule = $_GET['sort_type'];
     else $sortRule = 0;
 
-    $allPages = (int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'], $authorid)/$elementsPerPage)+1;
+    if ((int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'], $authorid)%$elementsPerPage) ==0) $allPages = (int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'],$authorid)/$elementsPerPage);
+    else $allPages = (int)($biblioteka->getBibliotekaBookCnt($_GET['bibliotekaid'],$authorid)/$elementsPerPage)+1;
+
     if ($currentPage<1 || $currentPage>$allPages) $currentPage = 1;
     $books = $biblioteka->showContainBooks($_GET['bibliotekaid'], $currentPage, $elementsPerPage, $authorid, $sortRule);
 

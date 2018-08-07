@@ -6,8 +6,6 @@ if(!isset($_POST['bookid']) ){
     exit;
 }
 else {
-    $file = fopen("sendcomment.log","a+");
-
     $comment = new Comment();
     $validError = array();
     $bookid = (integer) htmlspecialchars($_POST['bookid']);
@@ -41,10 +39,6 @@ else {
         $validError+=['bookcommentauthor'=>'first_char_is_not_char'];
     }
 
-
-    fwrite($file, implode($_POST));
-    fwrite($file, implode($validError));
-
     if(empty($validError)) {
         $comment->setBookComment($bookid, $bookcomment, $commentraiting, $bookcommentauthor);
         $validOk = ['sendcomment'=>'ok'];
@@ -53,5 +47,4 @@ else {
     else{
         echo json_encode($validError);
     }
-    fclose($file);
 }

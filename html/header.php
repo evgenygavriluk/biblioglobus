@@ -44,6 +44,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="author.php">Авторы</a>
                             </li>
+                            <?php
+                            if(isset($_SESSION['userid'])):
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="exit.php">Выход</a>
+                            </li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 </nav>

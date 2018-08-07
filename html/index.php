@@ -2,7 +2,7 @@
 session_start();
 require_once "Clases.php";
 
-echo 'userid = '.$_SESSION['userid'];
+//echo 'userid = '.$_SESSION['userid'];
 $h1 = 'Главная';
 
 if(!isset($_SESSION['userid']))
